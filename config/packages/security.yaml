@@ -1,0 +1,17 @@
+security:
+    enable_authenticator_manager: true
+
+    providers:
+        app_user_provider:
+            memory: ~
+
+    firewalls:
+        api:
+            pattern: ^/api/
+            stateless: true
+            custom_authenticator: App\Security\ApiTokenAuthenticator
+
+    access_control:
+        - { path: ^/api/doc.json, roles: PUBLIC_ACCESS }
+        - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

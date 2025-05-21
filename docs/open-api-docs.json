@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Demo Orders API",
+    "description": "Marice Lamain - 2025 ",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/orders": {
+      "get": {
+        "summary": "List orders",
+        "operationId": "get_app_order_list",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "Filter orders by customer ID",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns list of orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create orders",
+        "operationId": "post_app_order_create",
+        "requestBody": {
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Order created"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{id}": {
+      "get": {
+        "operationId": "get_app_order_get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_app_order_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OrderDto": {
+        "title": "Order DTO",
+        "description": "Simple representation of an order",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "customerId": {
+            "type": "integer",
+            "example": 123
+          },
+          "status": {
+            "type": "string",
+            "example": "paid"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "float",
+            "example": 99.99
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2025-05-21 12:34:56"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

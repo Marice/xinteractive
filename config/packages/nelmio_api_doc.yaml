@@ -1,0 +1,10 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title:       "Demo Orders API"
+            description: "Marice Lamain - 2025 "
+            version:     "1.0.0"
+    areas:
+        default:
+            path_patterns:
+                - '^/api'
