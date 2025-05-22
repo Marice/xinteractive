@@ -6,9 +6,7 @@
 
 - PHP 8.2+
 - Composer
-- Symfony CLI (optioneel, maar aanbevolen)
-- MySQL/MariaDB of andere door Doctrine ondersteunde database
-- Node.js + npm/yarn (optioneel, indien je frontend/documentatie styling wilt uitbreiden)
+- MySQL/MariaDB
 
 ---
 
@@ -21,8 +19,7 @@ composer install
 ```
 
 configureer de `.env`:
-Pas de volgende variabele aan in `.env.local`:
-
+Pas de volgende variabele aan in `.env` zodat mariadb connectie kan maken:
 ```
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/xinteractive"
 ```
@@ -37,8 +34,7 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-Fixtures creëren standaard:
-
+De fixtures creëren standaard:
 - 1 klant (Marice Lamain) -> met vaste id, om het even makkelijk te houden
 - 2 producten met vaste IDs (1: Laptop, 2: Mobiele telefoon)
 
@@ -58,7 +54,7 @@ API draait nu op: `http://localhost:8000/api`
 
 ## API-documentatie
 
-Swagger UI/Open Api is beschikbaar op:
+Swagger /Open Api is beschikbaar op:
 
 ```
 http://localhost:8000/api/doc.json
@@ -67,7 +63,6 @@ http://localhost:8000/api/doc.json
 ### Authenticatie
 
 Alle endpoints vereisen een geldige Bearer token in de Authorization header:
-
 ```
 Authorization: Bearer test-token-123
 ```
@@ -84,7 +79,6 @@ php bin/phpunit
 
 
 ## Mappenstructuur
-
 - `src/Controller` – API controllers
 - `src/Entity` – Doctrine entiteiten
 - `src/Dto` – Data Transfer Objects
