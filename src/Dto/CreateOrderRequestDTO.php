@@ -1,7 +1,6 @@
 <?php
 namespace App\Dto;
 
-use App\Entity\OrderItem;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
