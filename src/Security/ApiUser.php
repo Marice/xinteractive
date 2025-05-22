@@ -7,7 +7,9 @@ class ApiUser implements UserInterface
 {
     private string $username;
 
-    public function __construct(string $username)
+    public function __construct(
+        string $username
+    )
     {
         $this->username = $username;
     }
@@ -22,7 +24,7 @@ class ApiUser implements UserInterface
         return ['ROLE_API'];
     }
 
-    public function eraseCredentials() {}
+    public function eraseCredentials(): void {}
 
     public function getPassword(): ?string
     {

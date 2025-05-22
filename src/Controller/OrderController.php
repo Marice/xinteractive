@@ -19,9 +19,9 @@ use OpenApi\Attributes as OA;
 class OrderController extends AbstractController
 {
     public function __construct(
-        private OrderServiceInterface $orderService,
-        private EntityManagerInterface $em,
-        private OrderRepositoryInterface $orderRepository,
+        private readonly OrderServiceInterface $orderService,
+        private readonly EntityManagerInterface $em,
+        private readonly OrderRepositoryInterface $orderRepository,
     ) {}
 
     #[OA\Post(
@@ -36,17 +36,25 @@ class OrderController extends AbstractController
         ]
     )]
     #[Route('', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    public function create(
+        Request $request
+    ): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $content = (string) $request->getContent();
+        $data = json_decode($content, true);
 
         if (!is_array($data)) {
             return $this->json(['error' => 'Invalid JSON'], Response::HTTP_BAD_REQUEST);
         }
 
-
         try {
-            $requestDto = new CreateOrderRequestDTO($data['customerId'] ?? null, $data['items'] ?? []);
+            $customerId = is_numeric($data['customerId']) ? (int) $data['customerId'] :
+                throw new \InvalidArgumentException('Invalid customer id');
+
+            $items = isset($data['items']) && is_array($data['items']) ? $data['items'] :
+                throw new \InvalidArgumentException('Invalid items array');
+
+            $requestDto = new CreateOrderRequestDTO($customerId, $items);
             $order = $this->orderService->createOrder($requestDto);
 
             $orderDto = new OrderDto(
@@ -70,7 +78,6 @@ class OrderController extends AbstractController
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 
     #[OA\Get(
         path: '/api/v1/orders',
@@ -96,11 +103,14 @@ class OrderController extends AbstractController
         ]
     )]
     #[Route('', methods: ['GET'])]
-    public function list(Request $request): JsonResponse
+    public function list(
+        Request $request
+    ): JsonResponse
     {
-        $customerId = $request->query->get('customerId');
+        $customerIdRaw = $request->query->get('customerId');
+        $customerId = is_numeric($customerIdRaw) ? (int) $customerIdRaw : null;
 
-        if ($customerId) {
+        if ($customerId !== null) {
             $orders = $this->orderRepository->findActiveByCustomer($customerId);
         } else {
             $orders = $this->orderRepository->findAllActive();
@@ -109,7 +119,7 @@ class OrderController extends AbstractController
         $orderDtos = array_map(function($order) {
             return new OrderDto(
                 id: $order->getId(),
-                customerId:   $order->getCustomer()->getId(),
+                customerId: $order->getCustomer()->getId(),
                 status: $order->getStatus(),
                 totalAmount: $order->getTotalAmount(),
                 createdAt: $order->getCreatedAt()
@@ -126,9 +136,9 @@ class OrderController extends AbstractController
         parameters: [
             new OA\Parameter(
                 name: 'id',
+                description: 'The ID of the order to retrieve',
                 in: 'path',
                 required: true,
-                description: 'The ID of the order to retrieve',
                 schema: new OA\Schema(type: 'integer')
             )
         ],
@@ -144,10 +154,10 @@ class OrderController extends AbstractController
                 response: 404,
                 description: 'Order not found',
                 content: new OA\JsonContent(
-                    type: 'object',
                     properties: [
                         new OA\Property(property: 'error', type: 'string', example: 'Order not found')
-                    ]
+                    ],
+                    type: 'object'
                 )
             )
         ]
@@ -159,14 +169,13 @@ class OrderController extends AbstractController
     {
         $order = $this->orderRepository->find($id);
 
-
         if (!$order) {
             return $this->json(['error' => 'Order not found'], Response::HTTP_NOT_FOUND);
         }
 
         $orderDto = new OrderDto(
             id: $order->getId(),
-            customerId:   $order->getCustomer()->getId(),
+            customerId: $order->getCustomer()->getId(),
             status: $order->getStatus(),
             totalAmount: $order->getTotalAmount(),
             createdAt: $order->getCreatedAt()
@@ -175,7 +184,6 @@ class OrderController extends AbstractController
         return $this->json($orderDto);
     }
 
-
     #[OA\Delete(
         path: '/api/orders/{id}',
         summary: 'Archive an order (soft delete)',
@@ -183,9 +191,9 @@ class OrderController extends AbstractController
         parameters: [
             new OA\Parameter(
                 name: 'id',
+                description: 'The ID of the order to archive',
                 in: 'path',
                 required: true,
-                description: 'The ID of the order to archive',
                 schema: new OA\Schema(type: 'integer')
             )
         ],
@@ -198,16 +206,18 @@ class OrderController extends AbstractController
                 response: 404,
                 description: 'Order not found',
                 content: new OA\JsonContent(
-                    type: 'object',
                     properties: [
                         new OA\Property(property: 'error', type: 'string', example: 'Order not found')
-                    ]
+                    ],
+                    type: 'object'
                 )
             )
         ]
     )]
     #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id): JsonResponse
+    public function delete(
+        int $id
+    ): JsonResponse
     {
         $order = $this->orderRepository->find($id);
 

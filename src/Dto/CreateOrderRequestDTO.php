@@ -1,6 +1,7 @@
 <?php
 namespace App\Dto;
 
+use App\Entity\OrderItem;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -9,17 +10,29 @@ use OpenApi\Attributes as OA;
 )]
 class CreateOrderRequestDTO
 {
-    #[OA\Property(type: "integer", description: "Customer ID")]
+    #[OA\Property(
+        description: "Customer ID",
+        type: "integer"
+    )]
     public int $customerId;
 
+    /**
+     * @var array<int, array{productId: int, quantity: int}>
+     */
     #[OA\Property(
+        description: "Order items",
         type: "array",
-        items: new OA\Items(ref: "#/components/schemas/CreateOrderItemDTO"),
-        description: "Order items"
+        items: new OA\Items(ref: "#/components/schemas/CreateOrderItemDTO")
     )]
     public array $items;
 
-    public function __construct(int $customerId, array $items)
+    /**
+     * @param array<int, array{productId: int, quantity: int}> $items
+     */
+    public function __construct(
+        int $customerId,
+        array $items
+    )
     {
         $this->customerId = $customerId;
         $this->items = $items;

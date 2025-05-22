@@ -25,7 +25,13 @@ class OrderDto
     #[OA\Property(type: "string", example: "2025-05-21 12:34:56")]
     public string $createdAt;
 
-    public function __construct(int $id, int $customerId, string $status, float $totalAmount, \DateTimeInterface $createdAt)
+    public function __construct(
+        int $id,
+        int $customerId,
+        string $status,
+        float $totalAmount,
+        \DateTimeInterface $createdAt
+    )
     {
         $this->id = $id;
         $this->customerId = $customerId;

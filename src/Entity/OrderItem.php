@@ -26,11 +26,13 @@ class OrderItem
     #[ORM\Column(type: 'float')]
     private float $unitPrice;
 
-    public function __construct(Product $product = null, int $quantity = 1, float $unitPrice = 0.0)
+    public function __construct(
+        Product $product,
+        int     $quantity = 1,
+        float   $unitPrice = 0.0
+    )
     {
-        if ($product !== null) {
-            $this->product = $product;
-        }
+        $this->product = $product;
         $this->quantity = $quantity;
         $this->unitPrice = $unitPrice;
     }
@@ -45,7 +47,9 @@ class OrderItem
         return $this->order;
     }
 
-    public function setOrder(?Order $order): void
+    public function setOrder(
+        ?Order $order
+    ): void
     {
         $this->order = $order;
     }
@@ -55,7 +59,9 @@ class OrderItem
         return $this->product;
     }
 
-    public function setProduct(Product $product): void
+    public function setProduct(
+        Product $product
+    ): void
     {
         $this->product = $product;
     }
@@ -65,7 +71,9 @@ class OrderItem
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): void
+    public function setQuantity(
+        int $quantity
+    ): void
     {
         $this->quantity = $quantity;
     }
@@ -75,7 +83,9 @@ class OrderItem
         return $this->unitPrice;
     }
 
-    public function setUnitPrice(float $unitPrice): void
+    public function setUnitPrice(
+        float $unitPrice
+    ): void
     {
         $this->unitPrice = $unitPrice;
     }
@@ -83,5 +93,13 @@ class OrderItem
     public function getTotalPrice(): float
     {
         return $this->unitPrice * $this->quantity;
+    }
+
+    public function setId(
+        int $id
+    ): OrderItem
+    {
+        $this->id = $id;
+        return $this;
     }
 }

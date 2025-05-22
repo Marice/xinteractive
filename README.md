@@ -1,6 +1,5 @@
 # Order Management API
 
-
 ## Installatie & Initialisatie
 
 ### 1. Vereisten
@@ -16,18 +15,13 @@
 ### 2. Project opzetten
 
 ```bash
-git clone https://github.com/jouw-gebruiker/your-project.git
-cd your-project
+git clone https://github.com/Marice/xinteractive
+cd xinteractive
 composer install
 ```
 
-Kopieer en configureer je `.env`:
-
-```bash
-cp .env .env.local
-```
-
-Pas de volgende variabelen aan in `.env.local`:
+configureer de `.env`:
+Pas de volgende variabele aan in `.env.local`:
 
 ```
 DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/xinteractive"
@@ -45,7 +39,7 @@ php bin/console doctrine:fixtures:load
 
 Fixtures creëren standaard:
 
-- 1 klant (Marice Lamain)
+- 1 klant (Marice Lamain) -> met vaste id, om het even makkelijk te houden
 - 2 producten met vaste IDs (1: Laptop, 2: Mobiele telefoon)
 
 ---
@@ -64,15 +58,15 @@ API draait nu op: `http://localhost:8000/api`
 
 ## API-documentatie
 
-Swagger UI is beschikbaar op:
+Swagger UI/Open Api is beschikbaar op:
 
 ```
-http://localhost:8000/api/doc
+http://localhost:8000/api/doc.json
 ```
 
 ### Authenticatie
 
-De meeste endpoints vereisen een geldige Bearer token in de Authorization header:
+Alle endpoints vereisen een geldige Bearer token in de Authorization header:
 
 ```
 Authorization: Bearer test-token-123
@@ -97,14 +91,20 @@ php bin/phpunit
 - `src/Service` – Businesslogica
 - `src/Contract` – Interfaces voor repositories
 - `src/Repository` – Doctrine repositories
+- `tests` – PhpUnit tests
 
 ---
 
-## ✅ TODO / Roadmap
+### 5. Applicatie gebruiken
+in de /docs map zit een postman collectie die ingeladen kan worden om de verschillende endpoints te gebruiken 
 
-- [x] OpenAPI-documentatie via Nelmio
-- [x] Fixtures met vaste IDs
-- [x] Repositories via interfaces
-- [ ] Unit- en integratietests uitbreiden
-- [ ] CI/CD integratie
+### 6. Verbeterpunten (niet aan toegekomen wegens tijdslimiet)
+[] Een daadwerkelijke UI in React / Angular / Vue, die mooi aansluit op deze backend
+[] Meer test coverage
+[] PhpStan met een schone baseline op level 10
+[] Als een order archived is, de stock weer herstellen
+[] Daadwerkelijke Ci (geen dummy yaml)
+[] Daadwerkelijke authenticatie (geen dummy user) - SAML?
+[] Dto voor OrderItems
+
 

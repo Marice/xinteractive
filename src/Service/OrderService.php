@@ -18,7 +18,9 @@ class OrderService implements OrderServiceInterface
         private readonly ProductRepositoryInterface $productRepository,
     ) {}
 
-    public function createOrder(CreateOrderRequestDTO $dto): Order
+    public function createOrder(
+        CreateOrderRequestDTO $dto
+    ): Order
     {
         $customer = $this->customerRepository->find($dto->customerId);
 
@@ -39,10 +41,6 @@ class OrderService implements OrderServiceInterface
         $totalAmount = 0;
 
         foreach ($dto->items as $itemData) {
-            if (!isset($itemData['productId'], $itemData['quantity'])) {
-                throw new \InvalidArgumentException('Each item must have productId and quantity');
-            }
-
             $product = $this->productRepository->find($itemData['productId']);
             if (!$product) {
                 throw new \InvalidArgumentException("Product with ID {$itemData['productId']} not found");
@@ -58,8 +56,7 @@ class OrderService implements OrderServiceInterface
 
             $product->setStock($product->getStock() - $itemData['quantity']);
 
-            $orderItem = new OrderItem();
-            $orderItem->setProduct($product);
+            $orderItem = new OrderItem($product);
             $orderItem->setQuantity($itemData['quantity']);
             $orderItem->setUnitPrice($product->getPrice());
             $orderItem->setOrder($order);

@@ -11,9 +11,9 @@ interface OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function findActiveByCustomer(int $customerId): array;
-
-    public function save(Order $order): void;
+    public function findActiveByCustomer(
+        int $customerId
+    ): array;
 
     /**
      * @return Order[]

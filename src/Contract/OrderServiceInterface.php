@@ -7,5 +7,7 @@ use App\Entity\Order;
 
 interface OrderServiceInterface
 {
-    public function createOrder(CreateOrderRequestDTO $dto): Order;
+    public function createOrder(
+        CreateOrderRequestDTO $dto
+    ): Order;
 }

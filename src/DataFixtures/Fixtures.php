@@ -9,7 +9,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class Fixtures extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    public function load(
+        ObjectManager $manager
+    ): void
     {
         $customer = new Customer();
         $customer->setId(1);

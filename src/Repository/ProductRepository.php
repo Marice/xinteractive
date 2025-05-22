@@ -18,20 +18,4 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return $this->em->getRepository(Product::class)->find($id);
     }
-
-    public function findInStock(): array
-    {
-        return $this->em->getRepository(Product::class)->createQueryBuilder('p')
-            ->where('p.stock > 0')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function save(
-        Product $product
-    ): void
-    {
-        $this->em->persist($product);
-        $this->em->flush();
-    }
 }

@@ -8,9 +8,15 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class OrderRepository implements OrderRepositoryInterface
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(
+        private EntityManagerInterface $em
+    )
+    {
+    }
 
-    public function find(int $id): ?Order
+    public function find(
+        int $id
+    ): ?Order
     {
         return $this->em->getRepository(Order::class)->find($id);
     }
@@ -22,7 +28,9 @@ class OrderRepository implements OrderRepositoryInterface
         ]);
     }
 
-    public function findActiveByCustomer(int $customerId): array
+    public function findActiveByCustomer(
+        int $customerId
+    ): array
     {
         return $this->em->getRepository(Order::class)->findBy([
             'customer' => $customerId,
@@ -30,9 +38,4 @@ class OrderRepository implements OrderRepositoryInterface
         ]);
     }
 
-    public function save(Order $order): void
-    {
-        $this->em->persist($order);
-        $this->em->flush();
-    }
 }

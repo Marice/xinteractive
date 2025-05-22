@@ -25,6 +25,9 @@ class Order
     #[ORM\Column(type: 'boolean')]
     private bool $archived = false;
 
+    /**
+     * @var Collection<int, OrderItem>
+     */
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $items;
 
@@ -51,7 +54,9 @@ class Order
         return $this->customer;
     }
 
-    public function setCustomer(Customer $customer): void
+    public function setCustomer(
+        Customer $customer
+    ): void
     {
         $this->customer = $customer;
     }
@@ -61,35 +66,40 @@ class Order
         return $this->createdAt;
     }
 
+    public function setCreatedAt(
+        \DateTimeInterface $createdAt
+    ): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     public function isArchived(): bool
     {
         return $this->archived;
     }
 
-    public function setArchived(bool $archived): void
+    public function setArchived(
+        bool $archived
+    ): void
     {
         $this->archived = $archived;
     }
 
+    /**
+     * @return Collection<int, OrderItem>
+     */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function addItem(OrderItem $item): void
+    public function addItem(
+        OrderItem $item
+    ): void
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
             $item->setOrder($this);
-        }
-    }
-
-    public function removeItem(OrderItem $item): void
-    {
-        if ($this->items->removeElement($item)) {
-            if ($item->getOrder() === $this) {
-                $item->setOrder(null);
-            }
         }
     }
 
@@ -98,7 +108,9 @@ class Order
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(
+        string $status
+    ): void
     {
         $this->status = $status;
     }
@@ -108,13 +120,18 @@ class Order
         return $this->totalAmount;
     }
 
-    public function setTotalAmount(float $totalAmount): void
+    public function setTotalAmount(
+        float $totalAmount
+    ): void
     {
         $this->totalAmount = $totalAmount;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setId(
+        int $id
+    ): Order
     {
-        $this->createdAt = $createdAt;
+        $this->id = $id;
+        return $this;
     }
 }
