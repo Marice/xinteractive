@@ -99,12 +99,12 @@ php bin/phpunit
 in de /docs map zit een postman collectie die ingeladen kan worden om de verschillende endpoints te gebruiken 
 
 ### 6. Verbeterpunten (niet aan toegekomen wegens tijdslimiet)
-[] Een daadwerkelijke UI in React / Angular / Vue, die mooi aansluit op deze backend
-[] Meer test coverage
-[] PhpStan met een schone baseline op level 10
-[] Als een order archived is, de stock weer herstellen
-[] Daadwerkelijke Ci (geen dummy yaml)
-[] Daadwerkelijke authenticatie (geen dummy user) - SAML?
-[] Dto voor OrderItems
+- Een daadwerkelijke UI in React / Angular / Vue, die mooi aansluit op deze backend
+- Meer test coverage
+- PhpStan met een schone baseline op level 10
+- Als een order archived is, de stock weer herstellen
+- Daadwerkelijke Ci (geen dummy yaml)
+- Daadwerkelijke authenticatie (geen dummy user) - SAML?
+- Dto voor OrderItems
 
 
